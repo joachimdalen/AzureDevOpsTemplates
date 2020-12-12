@@ -1,3 +1,5 @@
+# Remember that 'persistCredentials: true' must be set in the checkout step
+
 parameters:
   - name: tagFormat
     type: string
@@ -9,13 +11,13 @@ parameters:
   - name: gitEmail
     type: string
     default: buildservice@project.com
-    
+
 steps:
   - task: Bash@3
-    displayName: 'Create tag'
-    name: 'create_tag'
+    displayName: "Create tag"
+    name: "create_tag"
     inputs:
-      targetType: 'inline'
+      targetType: "inline"
       script: |
         git config --global user.name "${{ parameters.gitUser }}"
         git config --global user.email "${{ parameters.gitEmail }}"
