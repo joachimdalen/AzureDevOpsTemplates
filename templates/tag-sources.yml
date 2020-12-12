@@ -1,0 +1,23 @@
+parameters:
+  - name: tagFormat
+    type: string
+  - name: tagDescription
+    type: string
+  - name: gitUser
+    type: string
+    default: BuildService
+  - name: gitEmail
+    type: string
+    default: buildservice@project.com
+    
+steps:
+  - task: Bash@3
+    displayName: 'Create tag'
+    name: 'create_tag'
+    inputs:
+      targetType: 'inline'
+      script: |
+        git config --global user.name "${{ parameters.gitUser }}"
+        git config --global user.email "${{ parameters.gitEmail }}"
+        git tag -a ${{ parameters.tagFormat }} -m "${{ parameters.tagDescription }}"
+        git push --tags
