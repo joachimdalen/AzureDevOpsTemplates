@@ -1,0 +1,22 @@
+parameters:
+  - name: doctlVersion
+    type: string
+    default: "1.56.0"
+  - name: accessToken
+    type: string
+
+steps:
+  - task: Bash@3
+    displayName: "Download and install doctl"
+    inputs:
+      targetType: "inline"
+      script: |
+        cd ~
+        wget https://github.com/digitalocean/doctl/releases/download/v${{ parameters.doctlVersion }}/doctl-${{ parameters.doctlVersion }}-linux-amd64.tar.gz
+        tar xf ~/doctl-${{ parameters.doctlVersion }}-linux-amd64.tar.gz
+        sudo mv ~/doctl /usr/local/bin
+  - task: Bash@3
+    displayName: "Authenticate doctl"
+    inputs:
+      targetType: "inline"
+      script: doctl auth init -t ${{ parameters.accessToken }}
