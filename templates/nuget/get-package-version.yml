@@ -1,0 +1,32 @@
+parameters:
+  - name: SELECTED_PACKAGE_VERSION
+    type: string
+    displayName: 'Package Version'
+    default: 'not-set'
+  - name: PACKAGE_NAME
+    type: string
+    displayName: 'Package Name'
+    default: '$(PACKAGE_NAME)'
+  - name: "INCREASE_MAJOR"
+    type: boolean
+    default: false
+    displayName: "Increase Major Version"
+  - name: "INCREASE_MINOR"
+    type: boolean
+    default: false
+    displayName: "Increase Minor Version"
+  - name: "INCREASE_PATCH"
+    type: boolean
+    default: false
+    displayName: "Increase Patch Version"
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Set package version'
+    name: SetVersion
+    inputs:
+      filePath: '../../scripts/get-updated-package-version.ps1'
+      arguments: '-IncreaseMajor $${{ parameters.INCREASE_MAJOR }} -IncreaseMinor $${{ parameters.INCREASE_MINOR }} -IncreasePatch $${{ parameters.INCREASE_PATCH }} -SelectedVersion ${{ parameters.SELECTED_PACKAGE_VERSION }} -PackageName ${{ parameters.PACKAGE_NAME }}'
+      failOnStderr: true
+      showWarnings: true
+      pwsh: true
